@@ -54,7 +54,6 @@ function getDateByYearMon(year: string, month: string) {
     }
     // 补全前面的日期
     const first = new Date(firstDay);
-    const last = new Date(lastDay);
     const upArr = [];
     if(first.getDay() !== 1) first.setDate(0);
     upArr.unshift(first.getDate());
@@ -63,6 +62,7 @@ function getDateByYearMon(year: string, month: string) {
         upArr.unshift(first.getDate());
     }
     // 补全后面的日期
+    const last = new Date(lastDay);
     const downArr = [];
     if(last.getDay() !== 0) last.setDate(last.getDate() + 1);
     downArr.push(last.getDate());
