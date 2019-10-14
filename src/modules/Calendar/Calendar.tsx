@@ -29,7 +29,7 @@ const dataSource: TrowItem[] = [
     {sun: '111', mon: '1', tue: '', wed: '', thu: '', fri: '', sat: ''},
 ];
 
-export default function Calender() {
+export default function Calendar() {
     return <div>
         <Paper>
             <Table>
