@@ -96,7 +96,8 @@ const monthList = makeMonthList();
 export default function Calendar() {
     const [curYear, setCurYear] = useState(String(now.getFullYear()));
     const [curMon, setCurMon] = useState(String(now.getMonth()));
-    const [dataSource,setDataSource] = useState([]);
+    // setXXX类函数是泛型函数，需要用<>约定特殊类型
+    const [dataSource,setDataSource] = useState<TrowItem[]>([]);
 
     const handleYearChange = () => (event: any) => {
         setCurYear(event.target.value)
@@ -107,7 +108,7 @@ export default function Calendar() {
     useEffect(function () {
         const dates = getDateByYearMon(curYear,curMon);
         const data:TrowItem[] = makeDateSource(dates);
-        setDataSource(data as never[])
+        setDataSource(data)
     },[curYear,curMon]);
 
     return <div>
