@@ -1,18 +1,10 @@
 import React, {useState, useEffect} from "react";
 import {Paper, Table, TableBody, TableHead, TableRow, TableCell, Select} from "@material-ui/core";
 import {SelectOption, TheadItem, TrowItem} from "./Calendar.d";
-
-const theadList: TheadItem[] = [
-    {key: 'mon', title: '星期一'},
-    {key: 'tue', title: '星期二'},
-    {key: 'wed', title: '星期三'},
-    {key: 'thu', title: '星期四'},
-    {key: 'fri', title: '星期五'},
-    {key: 'sat', title: '星期六'},
-    {key: 'sun', title: '星期天'},
-];
+import MDialog from "../MDialog/MDialog";
 
 const now = new Date();
+
 
 function makeYearList(): SelectOption[] {
     const curYear = now.getFullYear();
@@ -94,10 +86,27 @@ const yearList = makeYearList();
 const monthList = makeMonthList();
 
 export default function Calendar() {
+
     const [curYear, setCurYear] = useState(String(now.getFullYear()));
     const [curMon, setCurMon] = useState(String(now.getMonth()));
     // setXXX类函数是泛型函数，需要用<>约定特殊类型
     const [dataSource,setDataSource] = useState<TrowItem[]>([]);
+    const [open,setOpen] = useState(false);
+
+    function InnerItem(props: { children: any; }) {
+        const {children} = props;
+        return <div onClick={() => setOpen(true)}>{children}</div>
+    }
+
+    const theadList: TheadItem[] = [
+        {key: 'mon', title: '星期一', render: (item) => { return <InnerItem>{item}</InnerItem> }},
+        {key: 'tue', title: '星期二'},
+        {key: 'wed', title: '星期三'},
+        {key: 'thu', title: '星期四'},
+        {key: 'fri', title: '星期五'},
+        {key: 'sat', title: '星期六'},
+        {key: 'sun', title: '星期天'},
+    ];
 
     const handleYearChange = () => (event: any) => {
         setCurYear(event.target.value)
@@ -110,6 +119,10 @@ export default function Calendar() {
         const data:TrowItem[] = makeDateSource(dates);
         setDataSource(data)
     },[curYear,curMon]);
+
+    const handleClose = () => {
+        setOpen(false)
+    }
 
     return <div>
         <Paper>
@@ -134,6 +147,7 @@ export default function Calendar() {
                     }
                 </Select>月
             </div>
+            <MDialog open={open} onClose={handleClose} selectedValue={''}></MDialog>
             <Table>
                 <TableHead>
                     <TableRow>
@@ -144,10 +158,14 @@ export default function Calendar() {
                 </TableHead>
                 <TableBody>
                     {
-                        dataSource.map((row, index) => {
-                            return <TableRow key={index}>
+                        dataSource.map((row, rowIndex) => {
+                            return <TableRow key={rowIndex}>
                                 {
-                                    theadList.map(day => <TableCell key={day.key}>{row[day.key]}</TableCell>)
+                                    theadList.map((day,colIndex) => <TableCell key={day.key}>
+                                        {
+                                            day.render? day.render(row[day.key],row,rowIndex,colIndex) : row[day.key]
+                                        }
+                                    </TableCell>)
                                 }
                             </TableRow>
                         })
