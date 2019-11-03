@@ -16,3 +16,8 @@ export type TrowItem = {
 export interface Props  {
     itemRender: (item?: any, row?: any, rowIndex?: number, colIndex?: number) => React.ReactNode
 }
+
+export interface dateItem {
+    isCurMonth: boolean,
+    date: Number,
+}

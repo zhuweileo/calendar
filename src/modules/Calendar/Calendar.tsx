@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from "react";
 import {Paper, Table, TableBody, TableHead, TableRow, TableCell, Select} from "@material-ui/core";
-import {SelectOption, TheadItem, TrowItem, Props} from "./Calendar.d";
+import {SelectOption, TheadItem, TrowItem, Props, dateItem} from "./Calendar.d";
 
 const now = new Date();
 
@@ -40,32 +40,33 @@ function getDateByYearMon(year: string, month: string) {
             break;
         }
         if(i === 31) lastDay = unix;
-        dateList.push(i)
+        dateList.push({isCurMonth: true, date: i})
     }
     // 补全前面的日期
     const first = new Date(firstDay);
     const upArr = [];
     if(first.getDay() !== 1) first.setDate(0);
-    upArr.unshift(first.getDate());
+    upArr.unshift({isCurMonth: false, date: first.getDate()});
     while (first.getDay() !== 1) {
         first.setDate(first.getDate() - 1);
-        upArr.unshift(first.getDate());
+        upArr.unshift({isCurMonth: false, date: first.getDate()});
     }
     // 补全后面的日期
     const last = new Date(lastDay);
     const downArr = [];
     if(last.getDay() !== 0) last.setDate(last.getDate() + 1);
-    downArr.push(last.getDate());
+    downArr.push({isCurMonth: false, date: last.getDate()});
     while (last.getDay() !== 0) {
         last.setDate(last.getDate() + 1);
-        downArr.push(last.getDate());
+        downArr.push({isCurMonth: false, date:last.getDate()});
     }
 
     return [...upArr,...dateList,...downArr];
 }
-function makeDateSource(dates: number[]) {
+function makeDateSource(dates: dateItem[]) {
     let res:TrowItem[] = [];
     const resLen = parseInt(`${dates.length / 7}`);
+
     for(let i=0; i< resLen; i++) {
         res.push({
             mon: dates[i*7],
@@ -93,12 +94,12 @@ export default function Calendar(props: Props) {
 
     const theadList: TheadItem[] = [
         {key: 'mon', title: '星期一', render: itemRender},
-        {key: 'tue', title: '星期二'},
-        {key: 'wed', title: '星期三'},
-        {key: 'thu', title: '星期四'},
-        {key: 'fri', title: '星期五'},
-        {key: 'sat', title: '星期六'},
-        {key: 'sun', title: '星期天'},
+        {key: 'tue', title: '星期二', render: itemRender},
+        {key: 'wed', title: '星期三', render: itemRender},
+        {key: 'thu', title: '星期四', render: itemRender},
+        {key: 'fri', title: '星期五', render: itemRender},
+        {key: 'sat', title: '星期六', render: itemRender},
+        {key: 'sun', title: '星期天', render: itemRender},
     ];
 
     const handleYearChange = () => (event: any) => {
@@ -151,7 +152,7 @@ export default function Calendar(props: Props) {
                                 {
                                     theadList.map((day,colIndex) => <TableCell key={day.key}>
                                         {
-                                            day.render? day.render(row[day.key],row,rowIndex,colIndex) : row[day.key]
+                                            day.render? day.render(row[day.key],row,rowIndex,colIndex) : row[day.key].date
                                         }
                                     </TableCell>)
                                 }
