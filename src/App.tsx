@@ -7,7 +7,7 @@ import CalendarItem from "./modules/Calendar/CalendarItem"
 
 const App: React.FC = () => {
     const [open,setOpen] = useState(false);
-    const [curItem, setCurItem] = useState(null);
+    const [curItem, setCurItem] = useState(undefined);
 
     function handleClose() {
         setOpen(false);
