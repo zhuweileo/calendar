@@ -12,3 +12,7 @@ export interface SelectOption {
 export type TrowItem = {
     [key in WeekDay]: any
 }
+
+export interface Props  {
+    itemRender: (item?: any, row?: any, rowIndex?: number, colIndex?: number) => React.ReactNode
+}

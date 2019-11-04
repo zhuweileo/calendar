@@ -1,10 +1,8 @@
 import React, {useState, useEffect} from "react";
 import {Paper, Table, TableBody, TableHead, TableRow, TableCell, Select} from "@material-ui/core";
-import {SelectOption, TheadItem, TrowItem} from "./Calendar.d";
-import MDialog from "../MDialog/MDialog";
+import {SelectOption, TheadItem, TrowItem, Props} from "./Calendar.d";
 
 const now = new Date();
-
 
 function makeYearList(): SelectOption[] {
     const curYear = now.getFullYear();
@@ -85,21 +83,16 @@ function makeDateSource(dates: number[]) {
 const yearList = makeYearList();
 const monthList = makeMonthList();
 
-export default function Calendar() {
+export default function Calendar(props: Props) {
+    const {itemRender} = props
 
     const [curYear, setCurYear] = useState(String(now.getFullYear()));
     const [curMon, setCurMon] = useState(String(now.getMonth()));
     // setXXX类函数是泛型函数，需要用<>约定特殊类型
     const [dataSource,setDataSource] = useState<TrowItem[]>([]);
-    const [open,setOpen] = useState(false);
-
-    function InnerItem(props: { children: any; }) {
-        const {children} = props;
-        return <div onClick={() => setOpen(true)}>{children}</div>
-    }
 
     const theadList: TheadItem[] = [
-        {key: 'mon', title: '星期一', render: (item) => { return <InnerItem>{item}</InnerItem> }},
+        {key: 'mon', title: '星期一', render: itemRender},
         {key: 'tue', title: '星期二'},
         {key: 'wed', title: '星期三'},
         {key: 'thu', title: '星期四'},
@@ -119,10 +112,6 @@ export default function Calendar() {
         const data:TrowItem[] = makeDateSource(dates);
         setDataSource(data)
     },[curYear,curMon]);
-
-    const handleClose = () => {
-        setOpen(false)
-    }
 
     return <div>
         <Paper>
@@ -147,7 +136,6 @@ export default function Calendar() {
                     }
                 </Select>月
             </div>
-            <MDialog open={open} onClose={handleClose} selectedValue={''}></MDialog>
             <Table>
                 <TableHead>
                     <TableRow>
