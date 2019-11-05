@@ -5,3 +5,10 @@
   cursor: not-allowed;
   color: #ccc;
 }
+.dot{
+  $len:10px;
+  display: inline-block;
+  width: $len;
+  height: $len;
+
+}

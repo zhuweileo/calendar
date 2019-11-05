@@ -6,6 +6,7 @@ import style from './MDialog.module.scss';
 import DateFnsUtils from '@date-io/date-fns';
 import 'date-fns'
 import {KeyboardTimePicker, MuiPickersUtilsProvider,} from '@material-ui/pickers';
+import {getColorByTime} from "../../utils";
 
 const cx = className.bind(style);
 
@@ -22,31 +23,21 @@ export default function MDialog(props: Props) {
     const [selectedDate, setSelectedDate] = useState(sleepTime || new Date());
     const [isNextDay, setIsNextDay] = useState(false);
     const [color, setColor] = useState('#ccc');
-    const isFirstRef = useRef(true);
+    const isFirstOpenRef = useRef(true);
 
     useEffect(function () {
-        if(isFirstRef.current && !sleepTime) {
-            isFirstRef.current = false;
+        if(isFirstOpenRef.current && !sleepTime) {
+            isFirstOpenRef.current = false;
             return
         }
 
-        function getColorByTime() {
-            const curTime = new Date(selectedDate);
-            const curHour = curTime.getHours();
-            const curMinute = curTime.getMinutes();
-
-            if (!isNextDay && curHour < 23) return 'green';
-            if (!isNextDay && curHour === 23 && curMinute > 0) return 'yellow';
-            return 'red';
-        }
-
-        const color = getColorByTime();
+        const color = getColorByTime(selectedDate, isNextDay);
         setColor(color);
 
     }, [ selectedDate, isNextDay, sleepTime]);
 
     function closeHandler() {
-        onClose()
+        onClose();
     }
 
     function handleDateChange(date: any) {
