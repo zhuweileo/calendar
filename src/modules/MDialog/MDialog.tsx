@@ -18,10 +18,11 @@ export default function MDialog(props: Props) {
         selectedValue = {}
     } = props;
 
-    const {sleepTime, tableDate} = selectedValue;
+    const {sleepTime, date} = selectedValue;
+    const initIsNexDay = sleepTime ? new Date(sleepTime).getDate() !== date : false;
 
     const [selectedDate, setSelectedDate] = useState(sleepTime || new Date());
-    const [isNextDay, setIsNextDay] = useState(false);
+    const [isNextDay, setIsNextDay] = useState(initIsNexDay);
     const [color, setColor] = useState('#ccc');
     const isFirstOpenRef = useRef(true);
 

@@ -4,6 +4,6 @@ export function getColorByTime(sleepTime: any,isNextDay: boolean) {
     const curMinute = curTime.getMinutes();
 
     if (!isNextDay && curHour < 23) return 'green';
-    if (!isNextDay && curHour === 23 && curMinute >= 0) return 'yellow';
+    if (!isNextDay && curHour === 23 && curMinute >= 0) return '#8ba827';
     return 'red';
 }

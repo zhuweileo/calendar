@@ -5,13 +5,21 @@ import MDialog from "./modules/MDialog/MDialog";
 import CalendarItem from "./modules/Calendar/CalendarItem"
 
 const App: React.FC = () => {
-    const [open,setOpen] = useState(false);
+    const [open, setOpen] = useState(false);
     const [curItem, setCurItem] = useState(undefined);
 
     const sleepData = [
         {
             date: 1,
-            sleepTime: 1572948282902,
+            sleepTime: 1572621000000,
+        },
+        {
+            date: 9,
+            sleepTime: 1572621000000,
+        },
+        {
+            date: 20,
+            sleepTime: 1572621000000,
         },
     ];
 

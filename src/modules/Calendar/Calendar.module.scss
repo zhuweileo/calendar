@@ -6,9 +6,15 @@
   color: #ccc;
 }
 .dot{
-  $len:10px;
+  $len: 5px;
   display: inline-block;
   width: $len;
   height: $len;
-
+  border-radius: 50%;
+  position: absolute;
+  top: 0;
+  right: -10px;
+}
+.date-num{
+  position: relative;
 }
